@@ -26,7 +26,7 @@ const collectionsData = [
     title: "Le Noir Absolu",
     season: "Fall/Winter Capsule",
     description: "An exploration of texture within the void. Deep wools, lustrous silks, and structured leather come together to define the modern silhouette in absolute black.",
-    coverImg: "https://images.unsplash.com/photo-1626115628574-b88a15b12d4f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    coverImg: "https://images.unsplash.com/photo-1571513722275-4b41940f54b8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     lookbook: [
       "https://images.unsplash.com/photo-1620777888789-0ee95b57a277?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&q=100&auto=format",
