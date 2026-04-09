@@ -1,8 +1,9 @@
-import React from 'react';
-import { X, ShoppingBag, Plus, Minus, ArrowRight, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, ShoppingBag, Plus, Minus, ArrowRight, Trash2, Lock } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const CartDrawer = () => {
+  const navigate = useNavigate();
   const { items, isOpen, closeCart, removeItem, updateQty, totalPrice, clearCart } = useCart();
 
   return (
@@ -62,59 +63,66 @@ const CartDrawer = () => {
             </div>
           ) : (
             <div className="divide-y divide-gray-50">
-              {items.map((item, idx) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 px-7 py-5 group"
-                  style={{ animationDelay: `${idx * 40}ms` }}
-                >
-                  {/* Thumbnail */}
-                  <div className="relative w-20 h-24 flex-shrink-0 overflow-hidden bg-stone-50">
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                    <div>
-                      <p className="text-[9px] uppercase tracking-widest text-gray-400 mb-0.5">{item.cat}</p>
-                      <p className="font-serif text-sm text-black leading-snug">{item.name}</p>
-                      <p className="text-sm font-medium text-black mt-1.5">
-                        ₹{(item.price * item.qty).toLocaleString('en-IN')}
-                      </p>
+              {items.map((item, idx) => {
+                const variantId = `${item.id}-${item.selectedSize}-${item.selectedColor}`;
+                return (
+                  <div
+                    key={variantId}
+                    className="flex gap-4 px-7 py-5 group"
+                    style={{ animationDelay: `${idx * 40}ms` }}
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative w-20 h-24 flex-shrink-0 overflow-hidden bg-stone-50">
+                      <img
+                        src={item.img}
+                        alt={item.name}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
 
-                    {/* Qty controls */}
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center border border-gray-200">
+                    {/* Info */}
+                    <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                      <div>
+                        <div className="flex justify-between items-start">
+                          <p className="text-[9px] uppercase tracking-widest text-gray-400 mb-0.5">{item.cat}</p>
+                          <p className="text-[9px] uppercase tracking-widest text-black font-medium">{item.selectedSize} / {item.selectedColor}</p>
+                        </div>
+                        <p className="font-serif text-sm text-black leading-snug">{item.name}</p>
+                        <p className="text-sm font-medium text-black mt-1.5">
+                          ₹{(item.price * item.qty).toLocaleString('en-IN')}
+                        </p>
+                      </div>
+
+                      {/* Qty controls */}
+                      <div className="flex items-center justify-between mt-3">
+                        <div className="flex items-center border border-gray-200">
+                          <button
+                            onClick={() => updateQty(variantId, -1)}
+                            className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          <span className="w-8 text-center text-[12px] font-medium">{item.qty}</span>
+                          <button
+                            onClick={() => updateQty(variantId, 1)}
+                            className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
                         <button
-                          onClick={() => updateQty(item.id, -1)}
-                          className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                          onClick={() => removeItem(variantId)}
+                          className="text-gray-300 hover:text-red-400 transition-colors p-1"
+                          title="Remove"
                         >
-                          <Minus className="w-3 h-3" />
-                        </button>
-                        <span className="w-8 text-center text-[12px] font-medium">{item.qty}</span>
-                        <button
-                          onClick={() => updateQty(item.id, 1)}
-                          className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
-                        >
-                          <Plus className="w-3 h-3" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-gray-300 hover:text-red-400 transition-colors p-1"
-                        title="Remove"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+
             </div>
           )}
         </div>
@@ -144,8 +152,14 @@ const CartDrawer = () => {
             </div>
 
             {/* Checkout */}
-            <button className="w-full py-4 bg-black text-white text-[11px] uppercase tracking-widest
-              hover:bg-stone-900 active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2">
+            <button 
+              onClick={() => {
+                navigate('/checkout');
+                closeCart();
+              }}
+              className="w-full py-4 bg-black text-white text-[11px] uppercase tracking-widest
+                hover:bg-stone-900 active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2"
+            >
               Proceed to Checkout
               <ArrowRight className="w-4 h-4" />
             </button>

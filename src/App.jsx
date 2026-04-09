@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Collections from './pages/Collections';
 import Shop from './pages/Shop';
+import ProductDetail from './pages/ProductDetail';
+import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -26,7 +28,10 @@ function App() {
             <Route path="/about"      element={<About />} />
             <Route path="/collections" element={<Collections />} />
             <Route path="/shop"       element={<Shop />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/checkout"   element={<Checkout />} />
           </Routes>
+
 
           {/* Footer */}
           <Footer />

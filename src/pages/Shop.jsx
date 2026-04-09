@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import {
   Heart, ShoppingBag, X, ChevronDown, ChevronRight,
-  LayoutGrid, List, Maximize2, SlidersHorizontal, Star, ArrowRight, Check
+  LayoutGrid, List, Maximize2, SlidersHorizontal, Star, ArrowRight, Check, Eye
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { ALL_PRODUCTS } from '../data/products';
 
 // ─── Intersection Observer Hook ───────────────────────────────────────────────
 function useInView(threshold = 0.1) {
@@ -18,24 +20,7 @@ function useInView(threshold = 0.1) {
 }
 
 // ─── All Products Data ────────────────────────────────────────────────────────
-const ALL_PRODUCTS = [
-  { id: 1,  name: 'Silk Evening Gown',        cat: 'Women',       sub: 'Dresses',    badge: 'New',         price: 18999, img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80', sizes: ['XS','S','M','L'], color: 'Black', rating: 4.8, reviews: 124 },
-  { id: 2,  name: 'Structured Wool Coat',     cat: 'Women',       sub: 'Outerwear',  badge: 'Best Seller', price: 14499, img: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80', sizes: ['S','M','L','XL'], color: 'Camel', rating: 4.9, reviews: 89 },
-  { id: 3,  name: 'Tailored Linen Blazer',    cat: 'Men',         sub: 'Outerwear',  badge: 'New',         price: 8999,  img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80', sizes: ['S','M','L','XL','XXL'], color: 'White', rating: 4.7, reviews: 56 },
-  { id: 4,  name: 'Classic Cashmere Sweater', cat: 'Men',         sub: 'Tops',       badge: 'Sale',        price: 6299,  img: 'https://images.unsplash.com/photo-1548883354-94bcfe321cbb?w=600&q=80', sizes: ['S','M','L'], color: 'Grey', rating: 4.6, reviews: 201 },
-  { id: 5,  name: 'Leather Crossbody Bag',    cat: 'Accessories', sub: 'Bags',       badge: 'New Arrivals',price: 7499,  img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80', sizes: ['One Size'], color: 'Tan', rating: 4.9, reviews: 77 },
-  { id: 6,  name: 'Gold Hoop Earrings',       cat: 'Accessories', sub: 'Jewellery',  badge: 'Best Seller', price: 2999,  img: 'https://images.unsplash.com/photo-1630019852942-f89202989a59?w=600&q=80', sizes: ['One Size'], color: 'Gold', rating: 4.8, reviews: 340 },
-  { id: 7,  name: 'Asymmetric Midi Dress',    cat: 'Women',       sub: 'Dresses',    badge: 'New Arrivals',price: 9499,  img: 'https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80', sizes: ['XS','S','M','L'], color: 'Black', rating: 4.5, reviews: 43 },
-  { id: 8,  name: 'Slim Chino Pants',         cat: 'Men',         sub: 'Bottoms',    badge: 'Sale',        price: 3999,  img: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&q=80', sizes: ['28','30','32','34','36'], color: 'Khaki', rating: 4.4, reviews: 158 },
-  { id: 9,  name: 'Suede Chelsea Boots',      cat: 'Accessories', sub: 'Shoes',      badge: 'New',         price: 11999, img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80', sizes: ['39','40','41','42','43'], color: 'Brown', rating: 4.7, reviews: 92 },
-  { id: 10, name: 'Pleated Trousers',         cat: 'Women',       sub: 'Bottoms',    badge: 'Sale',        price: 4299,  img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80', sizes: ['XS','S','M','L','XL'], color: 'White', rating: 4.3, reviews: 67 },
-  { id: 11, name: 'Oxford Dress Shirt',       cat: 'Men',         sub: 'Tops',       badge: 'New Arrivals',price: 4799,  img: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80', sizes: ['S','M','L','XL'], color: 'White', rating: 4.6, reviews: 112 },
-  { id: 12, name: 'Silk Scarf',               cat: 'Accessories', sub: 'Scarves',    badge: 'New',         price: 3499,  img: 'https://images.unsplash.com/photo-1601924921557-45e6dea0a157?w=600&q=80', sizes: ['One Size'], color: 'Multi', rating: 4.8, reviews: 55 },
-  { id: 13, name: 'Wide-Leg Trousers',        cat: 'Women',       sub: 'Bottoms',    badge: 'New',         price: 5999,  img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80', sizes: ['XS','S','M','L'], color: 'Beige', rating: 4.7, reviews: 38 },
-  { id: 14, name: 'Merino Turtleneck',        cat: 'Men',         sub: 'Tops',       badge: 'Best Seller', price: 5499,  img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80', sizes: ['S','M','L','XL'], color: 'Black', rating: 4.9, reviews: 209 },
-  { id: 15, name: 'Minimalist Watch',         cat: 'Accessories', sub: 'Watches',    badge: 'New Arrivals',price: 15999, img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80', sizes: ['One Size'], color: 'Silver', rating: 4.9, reviews: 187 },
-  { id: 16, name: 'Oversized Trench',         cat: 'Women',       sub: 'Outerwear',  badge: 'New',         price: 19999, img: 'https://images.unsplash.com/photo-1551803091-e20673f15770?w=600&q=80', sizes: ['XS','S','M','L'], color: 'Beige', rating: 4.8, reviews: 61 },
-];
+// Removed ALL_PRODUCTS constant - now imported from ../data/products
 
 const BADGE_STYLE = {
   'New': 'bg-black text-white',
@@ -46,121 +31,7 @@ const BADGE_STYLE = {
 
 const SORT_OPTIONS = ['Featured', 'Newest', 'Price: Low → High', 'Price: High → Low', 'Top Rated'];
 
-// ─── Quick View Modal ─────────────────────────────────────────────────────────
-const QuickView = ({ product, onClose, onAdd }) => {
-  const [size, setSize] = useState('');
-  const [tab, setTab] = useState('details');
-  const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
-  }, []);
-
-  const handleAdd = () => {
-    if (!size) return;
-    setAdded(true);
-    onAdd(product);
-    setTimeout(() => { setAdded(false); onClose(); }, 1200);
-  };
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-      <div
-        className="relative bg-white w-full max-w-4xl max-h-[90vh] overflow-hidden grid grid-cols-1 md:grid-cols-2 shadow-2xl animate-[fadeUp_.35s_ease-out]"
-        onClick={e => e.stopPropagation()}
-      >
-        {/* Close */}
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center bg-white/90 hover:bg-black hover:text-white transition-all duration-200">
-          <X className="w-4 h-4" />
-        </button>
-
-        {/* Image */}
-        <div className="relative overflow-hidden bg-stone-50 aspect-[3/4] md:aspect-auto">
-          <img src={product.img} alt={product.name} className="w-full h-full object-cover object-top" />
-          <span className={`absolute top-4 left-4 text-[9px] uppercase tracking-widest px-2.5 py-1 ${BADGE_STYLE[product.badge]}`}>
-            {product.badge}
-          </span>
-        </div>
-
-        {/* Info */}
-        <div className="flex flex-col p-8 overflow-y-auto">
-          <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-2">{product.cat} · {product.sub}</p>
-          <h2 className="font-serif text-3xl font-light text-black mb-3 leading-tight">{product.name}</h2>
-
-          {/* Rating */}
-          <div className="flex items-center gap-2 mb-5">
-            <div className="flex gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(product.rating) ? 'fill-black text-black' : 'text-gray-200 fill-gray-200'}`} />
-              ))}
-            </div>
-            <span className="text-[11px] text-gray-400 tracking-wide">{product.rating} ({product.reviews} reviews)</span>
-          </div>
-
-          {/* Price */}
-          <div className="flex items-baseline gap-3 mb-8">
-            <span className="text-2xl font-medium text-black">₹{product.price.toLocaleString('en-IN')}</span>
-            <span className="text-sm text-gray-400 line-through">₹{Math.round(product.price * 1.4).toLocaleString('en-IN')}</span>
-            <span className="text-xs text-stone-600 bg-stone-100 px-2 py-0.5">30% OFF</span>
-          </div>
-
-          {/* Size */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] uppercase tracking-widest text-gray-500">Select Size</p>
-              <button className="text-[10px] uppercase tracking-widest text-gray-400 underline underline-offset-2 hover:text-black transition-colors">Size Guide</button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {product.sizes.map(s => (
-                <button
-                  key={s}
-                  onClick={() => setSize(s)}
-                  className={`px-3 py-2 text-[11px] uppercase tracking-widest border transition-all duration-150
-                    ${size === s ? 'bg-black text-white border-black' : 'border-gray-200 text-gray-600 hover:border-black hover:text-black'}`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-            {!size && <p className="text-[10px] text-stone-400 mt-2 italic">Please select a size to continue</p>}
-          </div>
-
-          {/* Tabs */}
-          <div className="border-t border-gray-100 mb-5">
-            <div className="flex gap-6">
-              {['details', 'care', 'shipping'].map(t => (
-                <button key={t} onClick={() => setTab(t)}
-                  className={`py-3 text-[10px] uppercase tracking-widest border-b-2 transition-all duration-200
-                    ${tab === t ? 'border-black text-black' : 'border-transparent text-gray-400 hover:text-gray-700'}`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-            <div className="py-4 text-sm text-gray-500 leading-relaxed">
-              {tab === 'details' && `Premium ${product.color.toLowerCase()} ${product.name.toLowerCase()} crafted from the finest materials. Designed for effortless sophistication.`}
-              {tab === 'care' && 'Dry clean only. Keep away from direct sunlight. Store in provided dust bag. Do not tumble dry.'}
-              {tab === 'shipping' && 'Free standard shipping on orders above ₹5,000. Express delivery available. Returns accepted within 30 days.'}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <button
-            onClick={handleAdd}
-            disabled={!size}
-            className={`w-full py-4 text-[11px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300
-              ${size ? 'bg-black text-white hover:bg-stone-900 active:scale-[0.99]' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}
-              ${added ? 'bg-stone-700' : ''}`}
-          >
-            {added ? <><Check className="w-4 h-4" /> Added to Bag</> : <><ShoppingBag className="w-4 h-4" /> Add to Bag</>}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+// QuickView Modal removed - functionality replaced by direct ProductDetail navigation
 
 // ─── Filter Sidebar ───────────────────────────────────────────────────────────
 
@@ -262,6 +133,7 @@ const FilterSidebar = ({ filters, setFilters, onClose, isMobile }) => {
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 const ProductCard = ({ product, index, view, onQuickView, onAdd, onWish, wished }) => {
+  const navigate = useNavigate();
   const [ref, inView] = useInView(0.08);
   const [addedLocal, setAddedLocal] = useState(false);
 
@@ -298,11 +170,11 @@ const ProductCard = ({ product, index, view, onQuickView, onAdd, onWish, wished 
               <button onClick={() => onWish(product.id)} className={`w-9 h-9 flex items-center justify-center border transition-all duration-200 ${wished ? 'bg-black border-black' : 'border-gray-200 hover:border-black'}`}>
                 <Heart className={`w-4 h-4 ${wished ? 'fill-white text-white' : 'text-gray-400'}`} />
               </button>
-              <button onClick={() => onQuickView(product)} className="px-6 py-2 border border-gray-200 hover:border-black text-[11px] uppercase tracking-widest text-gray-600 hover:text-black transition-all duration-200 flex items-center gap-2">
-                <Maximize2 className="w-3.5 h-3.5" /> Quick View
-              </button>
-              <button onClick={handleAdd} className="px-6 py-2 bg-black text-white text-[11px] uppercase tracking-widest hover:bg-stone-800 transition-colors flex items-center gap-2">
-                <ShoppingBag className="w-3.5 h-3.5" />{addedLocal ? 'Added!' : 'Add to Bag'}
+              <button 
+                onClick={() => navigate(`/product/${product.id}`)} 
+                className="px-6 py-2 border border-gray-200 hover:border-black text-[11px] uppercase tracking-widest text-gray-600 hover:text-black transition-all duration-200 flex items-center gap-2"
+              >
+                <Eye className="w-3.5 h-3.5" /> View Product
               </button>
             </div>
           </div>
@@ -323,28 +195,27 @@ const ProductCard = ({ product, index, view, onQuickView, onAdd, onWish, wished 
           <Heart className={`w-4 h-4 transition-all duration-300 ${wished ? 'fill-white text-white' : 'text-gray-400'}`} />
         </button>
 
-        {/* Quick view on hover */}
-        <button
-          onClick={() => onQuickView(product)}
-          className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 delay-75"
-        >
-          <span className="bg-white/95 backdrop-blur-sm text-black text-[10px] uppercase tracking-widest px-5 py-2 flex items-center gap-2 shadow-sm hover:bg-black hover:text-white transition-colors duration-200">
-            <Maximize2 className="w-3.5 h-3.5" /> Quick View
-          </span>
-        </button>
+        {/* Hover buttons removed as per request to have button below image */}
 
-        {/* Add to bag */}
-        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-          <button onClick={handleAdd} className="w-full py-3.5 bg-black text-white text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-stone-900 transition-colors">
-            <ShoppingBag className="w-3.5 h-3.5" />
-            {addedLocal ? 'Added to Bag ✓' : 'Add to Bag'}
-          </button>
-        </div>
+        {/* Hover buttons removed as per request to avoid adding to bag without size/color selection */}
       </div>
+
+      {/* View Product Button - Now visible on all screens below image */}
+      <button 
+        onClick={() => navigate(`/product/${product.id}`)}
+        className="mt-3 w-full py-3 bg-stone-900 text-white text-[10px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-black active:scale-[0.98] transition-all"
+      >
+        <Eye className="w-4 h-4" /> View Product
+      </button>
 
       <div className="pt-4 space-y-1">
         <p className="text-[10px] uppercase tracking-widest text-gray-400">{product.cat} · {product.sub}</p>
-        <h3 className="font-serif text-base text-black leading-snug group-hover:underline underline-offset-4 decoration-gray-200 transition cursor-pointer">{product.name}</h3>
+        <h3 
+          onClick={() => navigate(`/product/${product.id}`)}
+          className="font-serif text-base text-black leading-snug group-hover:underline underline-offset-4 decoration-gray-200 transition cursor-pointer"
+        >
+          {product.name}
+        </h3>
         <div className="flex items-center gap-3 pt-1">
           <span className="text-sm font-medium text-black">₹{product.price.toLocaleString('en-IN')}</span>
           <span className="text-xs text-gray-400 line-through">₹{Math.round(product.price * 1.4).toLocaleString('en-IN')}</span>
@@ -415,13 +286,13 @@ const ShopHero = () => {
 
 // ─── Main Shop Page ───────────────────────────────────────────────────────────
 const Shop = () => {
+  const navigate = useNavigate();
   const { addItem, openCart, totalItems } = useCart();
   const [view, setView]           = useState('grid');
   const [sort, setSort]           = useState('Featured');
   const [sortOpen, setSortOpen]   = useState(false);
   const [filters, setFilters]     = useState({ cats: [], badges: [], prices: [] });
   const [mobileFilter, setMobileFilter] = useState(false);
-  const [quickView, setQuickView] = useState(null);
   const [wishlist, setWishlist]   = useState([]);
   const [animating, setAnimating] = useState(false);
   const [cartPing, setCartPing]   = useState(false);
@@ -586,13 +457,13 @@ const Shop = () => {
               ) : view === 'list' ? (
                 <div className="space-y-8">
                   {filteredProducts.map((p, i) => (
-                    <ProductCard key={p.id} product={p} index={i} view="list" onQuickView={setQuickView} onAdd={handleAdd} onWish={handleWish} wished={wishlist.includes(p.id)} />
+                    <ProductCard key={p.id} product={p} index={i} view="list" onAdd={handleAdd} onWish={handleWish} wished={wishlist.includes(p.id)} />
                   ))}
                 </div>
               ) : (
                 <div className={`grid gap-x-5 gap-y-14 ${view === 'grid' ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4' : 'grid-cols-2 md:grid-cols-3'}`}>
                   {filteredProducts.map((p, i) => (
-                    <ProductCard key={p.id} product={p} index={i} view={view} onQuickView={setQuickView} onAdd={handleAdd} onWish={handleWish} wished={wishlist.includes(p.id)} />
+                    <ProductCard key={p.id} product={p} index={i} view={view} onAdd={handleAdd} onWish={handleWish} wished={wishlist.includes(p.id)} />
                   ))}
                 </div>
               )}
@@ -629,8 +500,6 @@ const Shop = () => {
         </div>
       </>
 
-      {/* Quick View Modal */}
-      {quickView && <QuickView product={quickView} onClose={() => setQuickView(null)} onAdd={handleAdd} />}
     </div>
   );
 };

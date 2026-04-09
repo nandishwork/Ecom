@@ -8,6 +8,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authTab, setAuthTab] = useState('signin');
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { totalItems, openCart } = useCart();
 
   const openAuthModal = (tab) => {
@@ -39,15 +41,29 @@ const Navbar = () => {
             {/* Right: Search, Auth, Cart (Desktop) */}
             <div className="hidden md:flex items-center space-x-6">
               {/* Search */}
-              <div className="relative group">
-                <Search className="w-5 h-5 cursor-pointer group-hover:text-gray-500 transition-colors" />
-                <div className="absolute right-0 top-full mt-2 w-64 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
+              <div className="flex items-center">
+                <div className={`flex items-center transition-all duration-300 ${isSearchActive ? 'w-48 sm:w-64 opacity-100 mr-2' : 'w-0 opacity-0 pointer-events-none'}`}>
                   <input
                     type="text"
-                    placeholder="Search products..."
-                    className="w-full border-b border-black py-1 focus:outline-none text-sm placeholder-gray-400"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search HIVNK..."
+                    autoFocus={isSearchActive}
+                    className="w-full border-b border-black py-1 focus:outline-none text-sm placeholder-gray-400 bg-transparent font-light"
                   />
+                  {isSearchActive && (
+                    <button onClick={() => { setIsSearchActive(false); setSearchQuery(''); }} className="ml-1 text-gray-400 hover:text-black">
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
+                <button 
+                  onClick={() => setIsSearchActive(!isSearchActive)}
+                  className={`p-1 transition-colors duration-200 ${isSearchActive ? 'text-black' : 'text-gray-400 hover:text-black'}`}
+                  aria-label="Toggle search"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
               </div>
 
               {/* Auth */}
@@ -86,8 +102,22 @@ const Navbar = () => {
             </div>
 
             {/* Mobile: Search + Cart + Hamburger */}
-            <div className="md:hidden flex items-center space-x-4">
-              <Search className="w-5 h-5" />
+            <div className="md:hidden flex items-center space-x-3">
+              {/* Mobile Search */}
+              <div className="flex items-center">
+                <div className={`flex items-center transition-all duration-300 ${isSearchActive ? 'w-32 opacity-100' : 'w-0 opacity-0 pointer-events-none'}`}>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search..."
+                    className="w-full border-b border-black py-1 focus:outline-none text-[12px] bg-transparent"
+                  />
+                </div>
+                <button onClick={() => setIsSearchActive(!isSearchActive)} className="p-1">
+                  <Search className="w-5 h-5" />
+                </button>
+              </div>
 
               {/* Mobile Cart */}
               <button

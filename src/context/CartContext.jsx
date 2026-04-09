@@ -6,24 +6,34 @@ export const CartProvider = ({ children }) => {
   const [items, setItems]     = useState([]);
   const [isOpen, setIsOpen]   = useState(false);
 
-  const addItem = useCallback((product) => {
+  const addItem = useCallback((item) => {
     setItems(prev => {
-      const existing = prev.find(i => i.id === product.id);
+      // Unique key based on ID, size, and color to allow different variants in cart
+      const variantId = `${item.id}-${item.selectedSize}-${item.selectedColor}`;
+      const existing = prev.find(i => `${i.id}-${i.selectedSize}-${i.selectedColor}` === variantId);
+      
       if (existing) {
-        return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
+        return prev.map(i => `${i.id}-${i.selectedSize}-${i.selectedColor}` === variantId ? { ...i, qty: i.qty + 1 } : i);
       }
-      return [...prev, { ...product, qty: 1 }];
+      return [...prev, { ...item, qty: 1 }];
     });
   }, []);
 
-  const removeItem = useCallback((id) => {
-    setItems(prev => prev.filter(i => i.id !== id));
+  const updateQty = useCallback((variantId, delta) => {
+    setItems(prev => {
+      const result = prev.map(i => {
+        const currentVariantId = `${i.id}-${i.selectedSize}-${i.selectedColor}`;
+        if (currentVariantId === variantId) {
+          return { ...i, qty: i.qty + delta };
+        }
+        return i;
+      });
+      return result.filter(i => i.qty > 0);
+    });
   }, []);
 
-  const updateQty = useCallback((id, delta) => {
-    setItems(prev =>
-      prev.map(i => i.id === id ? { ...i, qty: Math.max(1, i.qty + delta) } : i)
-    );
+  const removeItem = useCallback((variantId) => {
+    setItems(prev => prev.filter(i => `${i.id}-${i.selectedSize}-${i.selectedColor}` !== variantId));
   }, []);
 
   const clearCart = useCallback(() => setItems([]), []);
