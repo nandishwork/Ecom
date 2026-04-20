@@ -68,7 +68,7 @@ const HDHero = () => {
     <div className="relative w-full h-[90vh] bg-black overflow-hidden perspective-1000">
       <img
         src="https://images.unsplash.com/photo-1492447166138-50c3889fccb1?w=2800&q=100&auto=format"
-        alt="HIVNK Editorial"
+        alt="Urban trends Editorial"
         className={`absolute inset-0 w-full h-full object-cover object-[50%_40%] md:object-center opacity-80 mix-blend-luminosity
           transition-all duration-[2s] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${loaded ? 'scale-100 blur-0' : 'scale-110 blur-sm'}`}
       />

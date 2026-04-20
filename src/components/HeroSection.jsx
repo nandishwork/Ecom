@@ -15,7 +15,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0">
         <img
           src="/hero.jpg"
-          alt="HIVNK Fashion"
+          alt="Urban trends Fashion"
           className="w-full h-full object-cover object-top"
         />
         {/* Gradient overlay — left side for text readability, keeps model visible on right */}

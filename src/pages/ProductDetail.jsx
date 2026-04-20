@@ -203,7 +203,7 @@ const ProductDetail = () => {
                 <div className="py-6 text-sm text-stone-500 leading-relaxed font-light">
                   {activeTab === 'details' && (
                     <div className="space-y-4">
-                      <p>Elevate your wardrobe with the {product.name}. A hallmark of the HIVNK collection, this piece merges traditional craftsmanship with contemporary silhouette.</p>
+                      <p>Elevate your wardrobe with the {product.name}. A hallmark of the Urban trends collection, this piece merges traditional craftsmanship with contemporary silhouette.</p>
                       <ul className="space-y-2 list-disc list-inside">
                         <li>100% Premium Sustainable Fabric</li>
                         <li>Hand-finished detailing</li>
@@ -213,7 +213,7 @@ const ProductDetail = () => {
                     </div>
                   )}
                   {activeTab === 'shipping' && (
-                    <p>Complimentary standard shipping on all orders. Express delivery (2-4 business days) available at checkout. Your order will arrive in our signature HIVNK sustainable packaging.</p>
+                    <p>Complimentary standard shipping on all orders. Express delivery (2-4 business days) available at checkout. Your order will arrive in our signature Urban trends sustainable packaging.</p>
                   )}
                   {activeTab === 'returns' && (
                     <p>We accept returns of unworn, unwashed items with original tags within 30 days of delivery. Return shipping is complimentary for domestic orders.</p>

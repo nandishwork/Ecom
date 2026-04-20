@@ -27,7 +27,7 @@ const AboutHero = () => {
     <div className="relative w-full h-[90vh] bg-black overflow-hidden perspective-1000">
       <img
         src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=2800&q=100&auto=format"
-        alt="HIVNK Studio"
+        alt="Urban trends Studio"
         className={`absolute inset-0 w-full h-full object-cover grayscale opacity-60 mix-blend-luminosity
           transition-all duration-[2s] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${loaded ? 'scale-100 blur-0' : 'scale-110 blur-sm'}`}
       />
@@ -46,7 +46,7 @@ const AboutHero = () => {
           </h1>
           <p className={`text-sm md:text-base text-white/60 tracking-wide leading-relaxed max-w-lg
             transition-all duration-1000 delay-1000 ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-            HIVNK was born from a desire to reclaim the essence of luxury—not as excess, but as the perfect balance of form, function, and enduring quality.
+            Urban trends was born from a desire to reclaim the essence of luxury—not as excess, but as the perfect balance of form, function, and enduring quality.
           </p>
         </div>
       </div>
@@ -71,10 +71,10 @@ const LegacySection = () => {
             </h2>
             <div className="space-y-6 text-gray-500 text-sm md:text-base font-light tracking-wide leading-relaxed">
               <p>
-                Founded in 2026, HIVNK emerged as a quiet revolution against the disposable culture of modern fashion. Our name, a derivation of the Hindi word for 'unique' or 'distinctive', reflects our commitment to creating pieces that are as singular as the individuals who wear them.
+                Founded in 2026, Urban trends emerged as a quiet revolution against the disposable culture of modern fashion. Our name, a derivation of the Hindi word for 'unique' or 'distinctive', reflects our commitment to creating pieces that are as singular as the individuals who wear them.
               </p>
               <p>
-                Every stitch, every seam, and every silhouette is considered with painstaking detail. We collaborate exclusively with master artisans who have spent decades perfecting their trade, ensuring that each HIVNK garment is not just seen, but felt.
+                Every stitch, every seam, and every silhouette is considered with painstaking detail. We collaborate exclusively with master artisans who have spent decades perfecting their trade, ensuring that each Urban trends garment is not just seen, but felt.
               </p>
             </div>
             
@@ -184,7 +184,7 @@ const StudioSection = () => {
               <em className="font-serif italic text-gray-500">Studio</em>
             </h2>
             <p className="text-sm md:text-base text-gray-500 font-light tracking-wide leading-relaxed mb-10">
-              Based in the heart of Mumbai, our design studio serves as an incubator for creativity. We combine traditional Indian textile heritage with global modernist perspectives to create something truly HIVNK.
+              Based in the heart of Mumbai, our design studio serves as an incubator for creativity. We combine traditional Indian textile heritage with global modernist perspectives to create something truly Urban trends.
             </p>
             <button className="group inline-flex items-center self-start gap-4 px-10 py-5 bg-black text-white text-[11px] uppercase tracking-widest hover:bg-gray-900 transition-all active:scale-[0.98]">
               Discover the Studio

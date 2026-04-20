@@ -34,7 +34,7 @@ const Navbar = () => {
             {/* Center: Logo */}
             <div className="flex-shrink-0 flex items-center">
               <Link to="/">
-                <h1 className="text-3xl font-serif font-bold tracking-tighter cursor-pointer">HIVNK</h1>
+                <h1 className="text-3xl font-serif font-bold tracking-tighter cursor-pointer">Urban trends</h1>
               </Link>
             </div>
 
@@ -47,7 +47,7 @@ const Navbar = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search HIVNK..."
+                    placeholder="Search Urban trends..."
                     autoFocus={isSearchActive}
                     className="w-full border-b border-black py-1 focus:outline-none text-sm placeholder-gray-400 bg-transparent font-light"
                   />

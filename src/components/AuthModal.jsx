@@ -19,7 +19,7 @@ const AuthModal = ({ isOpen, onClose, activeTab, setActiveTab }) => {
 
         {/* Logo/Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-serif font-bold tracking-tighter mb-2">HIVNK</h2>
+          <h2 className="text-3xl font-serif font-bold tracking-tighter mb-2">Urban trends</h2>
           <div className="flex justify-center space-x-6 border-b border-gray-100 mt-8">
             <button 
               onClick={() => setActiveTab('signin')}
@@ -105,7 +105,7 @@ const AuthModal = ({ isOpen, onClose, activeTab, setActiveTab }) => {
         {/* Footer Helper */}
         <div className="text-center mt-10">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 font-light">
-            Need Help? Contact <a href="mailto:support@hivnk.com" className="text-black font-normal">Our Artisans</a>
+            Need Help? Contact <a href="mailto:support@Urban trends.com" className="text-black font-normal">Our Artisans</a>
           </p>
         </div>
       </div>

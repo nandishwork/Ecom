@@ -242,7 +242,7 @@ const ShopHero = () => {
       {/* Parallax BG */}
       <img
         src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1800&q=90"
-        alt="HIVNK Shop"
+        alt="Urban trends Shop"
         style={{ transform: `translateY(${scrollY * 0.35}px)` }}
         className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-[1.6s] ${mounted ? 'opacity-50' : 'opacity-0'}`}
       />
@@ -261,7 +261,7 @@ const ShopHero = () => {
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-end pb-24 px-8 sm:px-16 lg:px-24">
         <p className={`text-[11px] uppercase tracking-[0.5em] text-white/50 mb-5 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          HIVNK · All Collections
+          Urban trends · All Collections
         </p>
         <h1 className={`font-serif text-6xl sm:text-8xl lg:text-[10rem] font-light text-white leading-none tracking-tight mb-8 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           Shop
